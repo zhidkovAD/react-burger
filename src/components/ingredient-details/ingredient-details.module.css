@@ -1,0 +1,19 @@
+.detail {
+	display: flex;
+	flex-direction: row;
+	column-gap: 20px;
+}
+
+.image {
+	display: block;
+	width: 480px;
+	height: 240px;
+}
+
+.parameterItem {
+	text-align: center;
+}
+
+.name {
+	text-align: center;
+}

@@ -1,0 +1,17 @@
+.image {
+	display: block;
+	width: 120px;
+	height: 120px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.order-number {
+	text-shadow: #4c4cff 1px 0 10px;
+}
+
+@media (height <= 650px) {
+	.last-p {
+		margin-bottom: 16px;
+	}
+}

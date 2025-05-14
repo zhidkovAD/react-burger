@@ -5,3 +5,43 @@
 	padding-bottom: 20px;
 	color: var(--text-primary-color);
 }
+
+.container_ingredients {
+	composes: custom_scroll from '../app/app.module.css';
+	max-height: 45%;
+	padding: 0;
+	overflow-y: auto;
+	list-style: none;
+}
+
+.container_ingredients > :first-child {
+	margin-top: 0;
+}
+
+.burger {
+	height: 100%;
+	padding: 0;
+}
+
+.ingredient {
+	background: var(--background);
+}
+
+.listItem {
+	display: flex;
+	align-items: center;
+}
+
+.totalCost {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.totalIcon {
+	width: 36px;
+	height: 32px;
+	margin: 0;
+	transform: scale(1.5);
+	transform-origin: top left;
+}

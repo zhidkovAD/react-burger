@@ -1,0 +1,22 @@
+.container {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.dialog {
+	position: relative;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: var(--background);
+	border-radius: var(--common-border-radius-s);
+}
+
+.caption {
+	flex: 1 0 100px;
+	min-width: 600px;
+}
