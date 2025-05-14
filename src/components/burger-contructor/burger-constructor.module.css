@@ -32,10 +32,16 @@
 	align-items: center;
 }
 
-.totalCost {
+.placeOrder {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+}
+
+.totalCost {
+	display: flex;
+	flex-direction: row;
+	margin-right: 40px;
 }
 
 .totalIcon {

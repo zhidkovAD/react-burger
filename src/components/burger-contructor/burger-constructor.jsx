@@ -72,13 +72,8 @@ export const BurgerConstructor = ({ ingredients }) => {
 					extraClass={`${styles.ingredient} ml-8`}
 				/>
 				{/* Оформление заказа */}
-				<div className={`${styles.totalCost} mr-4 mt-10`}>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							marginRight: '40px',
-						}}>
+				<div className={`${styles.placeOrder} mr-4 mt-10`}>
+					<div className={styles.totalCost}>
 						<p className='text text_type_digits-medium mr-2 mb-1'>{sum}</p>
 						<div className={`${styles.totalIcon} mr-10`}>
 							<CurrencyIcon type='primary' />

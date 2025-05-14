@@ -17,7 +17,12 @@ export const App = () => {
 	useMemo(() => {
 		setState({ ...state, loading: true });
 		fetch(BASE_URL)
-			.then((res) => res.json())
+			.then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
 			.then((res) => setState({ ...state, loading: false, data: res.data }))
 			.catch((error) =>
 				setState({

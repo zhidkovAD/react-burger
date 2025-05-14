@@ -5,7 +5,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
-function Modal({ caption, children, onClose, titleStyle, contentStyle }) {
+function Modal({ caption, children, onClose, classNameTitleModal, classNameContentModal }) {
 	useEffect(() => {
 		const checkEsc = (e) => {
 			if (e.key === 'Escape') {
@@ -23,7 +23,7 @@ function Modal({ caption, children, onClose, titleStyle, contentStyle }) {
 	return ReactDOM.createPortal(
 		<div className={styles.container}>
 			<div className={styles.dialog}>
-				<div style={titleStyle}>
+				<div className={classNameTitleModal}>
 					{caption && (
 						<p className={`${styles.caption} text text_type_main-large`}>
 							{caption}
@@ -31,7 +31,7 @@ function Modal({ caption, children, onClose, titleStyle, contentStyle }) {
 					)}
 					<CloseIcon type='primary' onClick={onClose} />
 				</div>
-				<div style={contentStyle}>{children}</div>
+				<div className={classNameContentModal}>{children}</div>
 			</div>
 			<ModalOverlay onClose={onClose} />
 		</div>,
@@ -43,6 +43,8 @@ Modal.propTypes = {
 	caption: PropTypes.string,
 	children: PropTypes.arrayOf(PropTypes.element),
 	onClose: PropTypes.func.isRequired,
+	classNameTitleModal: PropTypes.string,
+	classNameContentModal: PropTypes.string
 };
 
 export default Modal;

@@ -4,24 +4,12 @@ import Modal from '../modal/modal';
 import { ingredientPropType } from '@utils/prop-types.js';
 
 function IngredientDetails({ ingredientInfo, onClose }) {
+
 	return (
 		<Modal
 			caption='Детали ингридиента'
-			titleStyle={{
-				marginTop: '40px',
-				marginLeft: '40px',
-				marginRight: '40px',
-				display: 'flex',
-				flexDirection: 'row',
-				alignItems: 'center',
-			}}
-			contentStyle={{
-				display: 'flex',
-				flexDirection: 'column',
-				flex: '1 1 200px',
-				alignItems: 'center',
-				marginBottom: '60px',
-			}}
+			classNameTitleModal={styles.titleModalIngDetails}
+			classNameContentModal={styles.contentModalIngDetails}
 			onClose={onClose}>
 			<img
 				className={`${styles.image} mb-4`}

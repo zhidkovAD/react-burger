@@ -5,3 +5,20 @@
 	align-items: center;
 	gap: 4px;
 }
+
+.ingredient_price {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.ingredient_img {
+	width: 100%;
+	margin-right: 16px;
+	margin-left: 16px;
+}
+
+.ingredient_name {
+	height: 40px;
+	text-align: center;
+}

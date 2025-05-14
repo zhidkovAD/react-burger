@@ -6,20 +6,8 @@ function OrderDetails({ numberOrder, onClose }) {
 	return (
 		<Modal
 			onClose={onClose}
-			titleStyle={{
-				position: 'absolute',
-				top: '60px',
-				right: '40px',
-			}}
-			contentStyle={{
-				display: 'flex',
-				flexDirection: 'column',
-				flex: '1 1 200px',
-				alignItems: 'center',
-				marginBottom: '120px',
-				marginTop: '120px',
-				width: '600px',
-			}}>
+			classNameTitleModal={styles.titleModalOrdDetails}
+			classNameContentModal={styles.contentModalOrdDetails}>
 			<p
 				className={`${styles['order-number']} text text_type_digits-large mb-8`}>
 				{numberOrder}

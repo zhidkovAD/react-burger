@@ -23,16 +23,14 @@ export const BurgerIngredientCard = ({ ingredient, count }) => {
 			{count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
 			<img
 				alt={ingredient.name}
-				className='ml-4 mr-4'
-				style={{ width: '100%' }}
+				className={styles.ingredient_img}
 				src={ingredient.image}
 			/>
-			<div
-				style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+			<div className={styles.ingredient_price}>
 				<p className='text text_type_digits-small mr-1'>{ingredient.price}</p>
 				<CurrencyIcon type='primary' />
 			</div>
-			<div style={{ height: '40px', textAlign: 'center' }}>
+			<div className={styles.ingredient_name}>
 				<p className='text text_type_main-default'>{ingredient.name}</p>
 			</div>
 			{showDetails && (
