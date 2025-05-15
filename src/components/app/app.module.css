@@ -12,6 +12,13 @@
 	max-width: 1260px;
 }
 
+.status {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+	text-align: center;
+}
+
 .main {
 	display: flex;
 	justify-content: space-between;
@@ -19,4 +26,40 @@
 	height: 100%;
 	margin: 0 auto;
 	overflow: hidden;
+}
+
+/* Для поддержки браузеров на движке Chrome */
+
+.custom_scroll::-webkit-scrollbar {
+	width: 8px;
+}
+
+.custom_scroll::-webkit-scrollbar-track {
+	background: #2f2f37;
+}
+
+.custom_scroll::-webkit-scrollbar-thumb {
+	background: #8585ad;
+}
+
+.custom_scroll::-webkit-scrollbar-thumb:hover {
+	background: #555555;
+}
+
+/* Для поддержики FireFox */
+
+.custom_scroll::-moz-scrollbar {
+	width: 8px;
+}
+
+.custom_scroll::-moz-scrollbar-track {
+	background: #2f2f37;
+}
+
+.custom_scroll::-moz-scrollbar-thumb {
+	background: #8585ad;
+}
+
+.custom_scroll::-moz-scrollbar-thumb:hover {
+	background: #555555;
 }

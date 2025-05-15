@@ -1,0 +1,14 @@
+.title {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+}
+
+.container_ingredients {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px 24px;
+	margin-top: 24px;
+	margin-bottom: 40px;
+	margin-inline: 16px;
+}

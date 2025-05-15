@@ -1,0 +1,32 @@
+.image {
+	display: block;
+	width: 120px;
+	height: 120px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.order-number {
+	text-shadow: #4c4cff 1px 0 10px;
+}
+
+@media (height <= 650px) {
+	.last-p {
+		margin-bottom: 16px;
+	}
+}
+
+.titleModalOrdDetails {
+	position: absolute;
+	top: 60px;
+	right: 40px;		
+}
+
+.contentModalOrdDetails {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 200px;
+	align-items: center;
+	margin-block: 120px;
+	width: 600px;	
+}
