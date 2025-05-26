@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { request } from '@utils/request';
+import { clearBurgerConstructor } from './burger-constructor';
 
 const initialState = {
 	orderNumber: null,
@@ -37,25 +39,24 @@ export const {
 
 export default OrderDetailsReducer.reducer;
 
-const BASE_URL = 'https://norma.nomoreparties.space/api/orders';
 
 // усилитель
 export const fetchCreateOrder = (ingredients) => (dispatch) => {
 	dispatch(requestCreateOrder());
-	fetch(BASE_URL, {
+	
+	const options = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
 		},
 		body: JSON.stringify({ ingredients: ingredients.map((ing) => ing._id) }),
-	})
+	}
+
+	request('/orders', options)
 		.then((res) => {
-			if (res.ok) {
-				return res.json();
-			}
-			return Promise.reject(`Ошибка ${res.status}`);
+			dispatch(successRequestCreateOrder(res.order.number))
+			dispatch(clearBurgerConstructor())
 		})
-		.then((res) => dispatch(successRequestCreateOrder(res.order.number)))
 		.catch((error) => {
 			alert(`Ошибка создания заказа: ${error}`, error);
 			dispatch(errorRequestCreateOrder());

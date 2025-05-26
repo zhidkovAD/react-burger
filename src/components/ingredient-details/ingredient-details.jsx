@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setDisplayIngredient } from '../../services/ingredient-details';
 
 function IngredientDetails() {
+	
 	const ingredientInfo = useSelector(
 		(store) => store.ingredient_details.displayIngredient
 	);

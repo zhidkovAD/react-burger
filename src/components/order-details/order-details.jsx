@@ -43,7 +43,7 @@ function OrderDetails() {
 				</div>
 			</div>
 			<Button
-				disabled={loading}
+				disabled={loading || !bun}
 				htmlType='button'
 				type='primary'
 				onClick={createOrder}>

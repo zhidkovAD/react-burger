@@ -4,6 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsCategory } from './ingredients-category/intgredients-category';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTab } from '../../services/burger-ingredients';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 export const BurgerIngredients = () => {
 	const dispatch = useDispatch();
@@ -88,6 +89,7 @@ export const BurgerIngredients = () => {
 					)}
 				/>
 			</div>
+			<IngredientDetails />
 		</section>
 	);
 };

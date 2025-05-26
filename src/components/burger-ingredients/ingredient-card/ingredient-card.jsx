@@ -7,7 +7,6 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import IngredientDetails from '@components/ingredient-details/ingredient-details';
 import { setDisplayIngredient } from '../../../services/ingredient-details';
 
 export const BurgerIngredientCard = ({ ingredient }) => {
@@ -47,7 +46,6 @@ export const BurgerIngredientCard = ({ ingredient }) => {
 			<div className={styles.ingredient_name}>
 				<p className='text text_type_main-default'>{ingredient.name}</p>
 			</div>
-			<IngredientDetails />
 		</div>
 	);
 };

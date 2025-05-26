@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// import { ingredients as localIngredient }  from '@utils/ingredients.js';
+import { request } from '@utils/request';
 
 const initialState = {
 	ingredients: [],
@@ -45,18 +45,11 @@ export const {
 
 export default ingredientsReducer.reducer;
 
-const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients ';
 
 // усилитель
 export const fetchIngredients = () => (dispatch) => {
 	dispatch(requestIngredients());
-	fetch(BASE_URL)
-		.then((res) => {
-			if (res.ok) {
-				return res.json();
-			}
-			return Promise.reject(`Ошибка ${res.status}`);
-		})
+	request("/ingredients")
 		.then((res) => dispatch(successRequestIngredients(res.data)))
 		.catch((error) =>
 			dispatch(

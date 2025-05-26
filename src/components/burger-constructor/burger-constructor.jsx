@@ -88,7 +88,7 @@ export const BurgerConstructor = () => {
 					{ingredients && ingredients.length > 0 ? (
 						ingredients.map((ingredient, index) => (
 							<BurgerConstructorIngredient
-								key={index}
+								key={ingredient.uniqueId }
 								ingredient={ingredient}
 								index={index}
 								onDelete={handleDeleteIngredient}
