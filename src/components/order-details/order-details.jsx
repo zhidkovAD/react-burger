@@ -1,39 +1,82 @@
-import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import styles from './order-details.module.css';
+import {
+	CurrencyIcon,
+	Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
-function OrderDetails({ numberOrder, onClose }) {
+import { useDispatch, useSelector } from 'react-redux';
+
+import { fetchCreateOrder, closeWinOrder } from '../../services/order-details';
+
+function OrderDetails() {
+	const { orderNumber, loading } = useSelector((store) => store.order_details);
+	const { sum, ingredients, bun } = useSelector(
+		(store) => store.burger_constructor
+	);
+	const dispatch = useDispatch();
+
+	const createOrder = () => {
+		const orderIngredients = [...ingredients];
+		if (bun) {
+			orderIngredients.push(bun, bun);
+		}
+
+		if (orderIngredients.length == 0) {
+			alert('Нет выбранных ингредиентов!');
+			return;
+		}
+		dispatch(fetchCreateOrder(ingredients));
+	};
+
+	const closeOrder = (e) => {
+		e.stopPropagation();
+		dispatch(closeWinOrder());
+	};
+
 	return (
-		<Modal
-			onClose={onClose}
-			classNameTitleModal={styles.titleModalOrdDetails}
-			classNameContentModal={styles.contentModalOrdDetails}>
-			<p
-				className={`${styles['order-number']} text text_type_digits-large mb-8`}>
-				{numberOrder}
-			</p>
-			<p className='text text_type_main-medium mb-15 text-center'>
-				идентификатор заказа
-			</p>
-			<img
-				src={'/done.svg'}
-				className={`${styles.image} mb-15 text-center`}
-				alt='Заказ принят'
-			/>
-			<p className='text text_type_main-default mb-2 text-center'>
-				Ваш заказ начали готовить
-			</p>
-			<p
-				className={`${styles['last-p']} text text_type_main-default text_color_inactive text-center`}>
-				Дождитесь готовности на орбитальной станции
-			</p>
-		</Modal>
+		<div className={`${styles.placeOrder} mr-4 mt-10`}>
+			<div className={styles.totalCost}>
+				<p className='text text_type_digits-medium mr-2 mb-1'>{sum}</p>
+				<div className={`${styles.totalIcon} mr-10`}>
+					<CurrencyIcon type='primary' />
+				</div>
+			</div>
+			<Button
+				disabled={loading}
+				htmlType='button'
+				type='primary'
+				onClick={createOrder}>
+				Оформить заказ
+			</Button>
+			{orderNumber && (
+				<Modal
+					onClose={closeOrder}
+					classNameTitleModal={styles.titleModalOrdDetails}
+					classNameContentModal={styles.contentModalOrdDetails}>
+					<p
+						className={`${styles['order-number']} text text_type_digits-large mb-8`}>
+						{orderNumber}
+					</p>
+					<p className='text text_type_main-medium mb-15 text-center'>
+						идентификатор заказа
+					</p>
+					<img
+						src={'/done.svg'}
+						className={`${styles.image} mb-15 text-center`}
+						alt='Заказ принят'
+					/>
+					<p className='text text_type_main-default mb-2 text-center'>
+						Ваш заказ начали готовить
+					</p>
+					<p
+						className={`${styles['last-p']} text text_type_main-default text_color_inactive text-center`}>
+						Дождитесь готовности на орбитальной станции
+					</p>
+				</Modal>
+			)}
+		</div>
 	);
 }
-
-OrderDetails.propTypes = {
-	numberOrder: PropTypes.string.isRequired,
-	onClose: PropTypes.func.isRequired,
-};
 
 export default OrderDetails;

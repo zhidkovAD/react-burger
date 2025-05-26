@@ -1,25 +1,29 @@
 import React, { useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
-import * as PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '@utils/prop-types.js';
 import { BurgerIngredientsCategory } from './ingredients-category/intgredients-category';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTab } from '../../services/burger-ingredients';
 
-export const BurgerIngredients = ({ ingredients }) => {
-	const [category, setCategory] = useState('bun');
+export const BurgerIngredients = () => {
+	const dispatch = useDispatch();
 
-	const refBun = useRef(null);
-	const refMain = useRef(null);
-	const refSauce = useRef(null);
+	const ingredients = useSelector(
+		(store) => store.burger_ingredients.ingredients
+	);
+	const tab = useSelector((store) => store.burger_ingredients.tab);
+
+	const headers = {};
+	headers['bun'] = useRef(null);
+	headers['sauce'] = useRef(null);
+	headers['main'] = useRef(null);
+
 	const refContainer = useRef(null);
 
 	const tabClick = (value) => {
-		setCategory(value);
+		dispatch(setTab(value));
 		// При использовании scrollIntoView({ behavior: "smooth" }) пропадал элемент nav (возможно проблема со стилями), поэтому выполнил реализацию через scrollTo
-		let element;
-		if (value == 'bun') element = refBun.current;
-		else if (value == 'main') element = refMain.current;
-		else if (value == 'sauce') element = refSauce.current;
+		let element = headers[value].current;
 		refContainer.current.scrollTo({
 			block: 'start',
 			behavior: 'smooth',
@@ -27,38 +31,57 @@ export const BurgerIngredients = ({ ingredients }) => {
 		});
 	};
 
+	function handleScroll(e) {
+		const pos = e.currentTarget.scrollTop;
+		const distance = [];
+		for (let h of Object.values(headers)) {
+			const hPos = h.current.offsetTop;
+			distance.push(Math.abs(pos - hPos));
+		}
+		const min = Math.min(...distance);
+		const minIndex = distance.indexOf(min);
+		const newTab = Object.keys(headers)[minIndex];
+
+		if (tab !== newTab) {
+			dispatch(setTab(newTab));
+		}
+	}
+
 	return (
 		<section className={styles.burger_ingredients}>
 			<nav className='mb-10'>
 				<ul className={styles.menu}>
-					<Tab value='bun' active={category == 'bun'} onClick={tabClick}>
+					<Tab value='bun' active={tab == 'bun'} onClick={tabClick}>
 						Булки
 					</Tab>
-					<Tab value='main' active={category == 'main'} onClick={tabClick}>
+					<Tab value='main' active={tab == 'main'} onClick={tabClick}>
 						Начинки
 					</Tab>
-					<Tab value='sauce' active={category == 'sauce'} onClick={tabClick}>
+					<Tab value='sauce' active={tab == 'sauce'} onClick={tabClick}>
 						Соусы
 					</Tab>
 				</ul>
 			</nav>
-			<div ref={refContainer} className={styles.container_ingredients}>
+			<div
+				ref={refContainer}
+				className={styles.container_ingredients}
+				onScroll={handleScroll}>
 				<BurgerIngredientsCategory
-					ref={refBun}
+					ref={headers['bun']}
 					name={'Булки'}
 					ingredients_category={ingredients.filter(
 						(ingredient) => ingredient.type == 'bun'
 					)}
 				/>
 				<BurgerIngredientsCategory
-					ref={refMain}
+					ref={headers['main']}
 					name={'Начинки'}
 					ingredients_category={ingredients.filter(
 						(ingredient) => ingredient.type == 'main'
 					)}
 				/>
 				<BurgerIngredientsCategory
-					ref={refSauce}
+					ref={headers['sauce']}
 					name={'Соусы'}
 					ingredients_category={ingredients.filter(
 						(ingredient) => ingredient.type == 'sauce'
@@ -67,8 +90,4 @@ export const BurgerIngredients = ({ ingredients }) => {
 			</div>
 		</section>
 	);
-};
-
-BurgerIngredients.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

@@ -32,22 +32,13 @@
 	align-items: center;
 }
 
-.placeOrder {
+.emptyElement {
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
+	text-align: center;
+	background: var(--background);
 }
 
-.totalCost {
-	display: flex;
-	flex-direction: row;
-	margin-right: 40px;
-}
-
-.totalIcon {
-	width: 36px;
-	height: 32px;
-	margin: 0;
-	transform: scale(1.5);
-	transform-origin: top left;
+.emptyElementText {
+	flex: 1;
 }

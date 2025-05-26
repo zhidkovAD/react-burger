@@ -14,7 +14,6 @@ export const BurgerIngredientsCategory = forwardRef(
 						<BurgerIngredientCard
 							key={ingredient._id}
 							ingredient={ingredient}
-							count={1}
 						/>
 					))}
 				</div>

@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import styles from './ingredient-card.module.css';
-import * as PropTypes from 'prop-types';
+import { useDrag } from 'react-dnd';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
 import IngredientDetails from '@components/ingredient-details/ingredient-details';
+import { setDisplayIngredient } from '../../../services/ingredient-details';
 
-export const BurgerIngredientCard = ({ ingredient, count }) => {
-	const [showDetails, setShowDetails] = useState(false);
+export const BurgerIngredientCard = ({ ingredient }) => {
+	const { bun, ingredients } = useSelector((store) => store.burger_constructor);
 
-	const closeIngredientDetail = (e) => {
-		e.stopPropagation();
-		setShowDetails(false);
-	};
+	const countIngredient = useMemo(() => {
+		if (bun && ingredient._id == bun._id) {
+			return 2;
+		}
+		return ingredients.filter((ingr) => ingr._id == ingredient._id).length;
+	}, [bun, ingredients]);
+
+	const dispatch = useDispatch();
+
+	const [, dragRef] = useDrag({
+		type: ingredient.type,
+		item: ingredient,
+	});
 
 	return (
 		<div
+			ref={dragRef}
 			className={styles.ingredient_card}
-			onClick={() => setShowDetails(true)}>
-			{count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
+			onClick={() => dispatch(setDisplayIngredient(ingredient))}>
+			{countIngredient > 0 && (
+				<Counter count={countIngredient} size='default' extraClass='m-1' />
+			)}
 			<img
 				alt={ingredient.name}
 				className={styles.ingredient_img}
@@ -33,17 +47,11 @@ export const BurgerIngredientCard = ({ ingredient, count }) => {
 			<div className={styles.ingredient_name}>
 				<p className='text text_type_main-default'>{ingredient.name}</p>
 			</div>
-			{showDetails && (
-				<IngredientDetails
-					ingredientInfo={ingredient}
-					onClose={closeIngredientDetail}
-				/>
-			)}
+			<IngredientDetails />
 		</div>
 	);
 };
 
 BurgerIngredientCard.propTypes = {
 	ingredient: ingredientPropType.isRequired,
-	count: PropTypes.number.isRequired,
 };
