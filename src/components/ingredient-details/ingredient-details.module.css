@@ -23,7 +23,7 @@
 	margin-inline: 40px;
 	display: flex;
 	flex-direction: row;
-	align-items: center;			
+	align-items: center;
 }
 
 .contentModalIngDetails {
@@ -31,5 +31,5 @@
 	flex-direction: column;
 	flex: 1 1 200px;
 	align-items: center;
-	margin-bottom: 60px;		
+	margin-bottom: 60px;
 }

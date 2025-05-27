@@ -1,46 +1,29 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './app.module.css';
-// import { ingredients as localIngredient }  from '@utils/ingredients.js';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
 
-const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients ';
+import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
+import { BurgerConstructor } from '@components/burger-constructor/burger-constructor.jsx';
+import { AppHeader } from '@components/app-header/app-header.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchIngredients } from '../../services/burger-ingredients';
 
 export const App = () => {
-	const [state, setState] = useState({
-		data: [],
-		error: false,
-		loading: false,
-	});
+	const dispatch = useDispatch();
+
+	const burgerIngredients = useSelector((store) => store.burger_ingredients);
 
 	useMemo(() => {
-		setState({ ...state, loading: true });
-		fetch(BASE_URL)
-			.then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка ${res.status}`);
-            })
-			.then((res) => setState({ ...state, loading: false, data: res.data }))
-			.catch((error) =>
-				setState({
-					...state,
-					loading: false,
-					error: `Ошибка получения ингредиентов: ${error}`,
-				})
-			);
-	}, []);
+		dispatch(fetchIngredients());
+	}, [dispatch]);
 
 	return (
 		<div className={styles.app}>
 			<AppHeader />
-			{state.loading || state.error ? (
+			{burgerIngredients.loading || burgerIngredients.error ? (
 				<h1 className={`${styles.status} text text_type_main-medium`}>
-					{state.loading
+					{burgerIngredients.loading
 						? 'Пожалуйста подождите, идет загрузка данных...'
-						: state.error}
+						: burgerIngredients.error}
 				</h1>
 			) : (
 				<>
@@ -49,8 +32,8 @@ export const App = () => {
 						Соберите бургер
 					</h1>
 					<main className={`${styles.main} pl-5 pr-5`}>
-						<BurgerIngredients ingredients={state.data} />
-						<BurgerConstructor ingredients={state.data} />
+						<BurgerIngredients />
+						<BurgerConstructor />
 					</main>
 				</>
 			)}
