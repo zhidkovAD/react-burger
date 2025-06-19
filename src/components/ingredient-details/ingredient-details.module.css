@@ -17,19 +17,3 @@
 .name {
 	text-align: center;
 }
-
-.titleModalIngDetails {
-	margin-top: 40px;
-	margin-inline: 40px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.contentModalIngDetails {
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 200px;
-	align-items: center;
-	margin-bottom: 60px;
-}

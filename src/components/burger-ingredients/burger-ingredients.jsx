@@ -1,14 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsCategory } from './ingredients-category/intgredients-category';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { setTab } from '../../services/burger-ingredients';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
+import { setDisplayIngredient } from '../../services/ingredient-details';
 
 export const BurgerIngredients = () => {
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate();
 	const ingredients = useSelector(
 		(store) => store.burger_ingredients.ingredients
 	);
@@ -47,6 +50,19 @@ export const BurgerIngredients = () => {
 			dispatch(setTab(newTab));
 		}
 	}
+
+	const closeIngredientDetail = useCallback(
+		(e) => {
+			navigate("/", { replace: true });
+			dispatch(setDisplayIngredient(null));
+			e.stopPropagation();
+		},
+		[dispatch,navigate]
+	);
+
+	const ingredientInfo = useSelector(
+		(store) => store.ingredient_details.displayIngredient
+	);
 
 	return (
 		<section className={styles.burger_ingredients}>
@@ -89,7 +105,13 @@ export const BurgerIngredients = () => {
 					)}
 				/>
 			</div>
-			<IngredientDetails />
+			{ingredientInfo && (
+                <Modal caption="Детали ингридиента" classNameTitleModal={styles.titleModalIngDetails}
+									classNameContentModal={styles.contentModalIngDetails}
+									onClose={closeIngredientDetail}>
+                    <IngredientDetails />
+                </Modal>
+            )}
 		</section>
 	);
 };

@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styles from './ingredient-card.module.css';
+
 import { useDrag } from 'react-dnd';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
@@ -7,9 +8,13 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setDisplayIngredient } from '../../../services/ingredient-details';
 
 export const BurgerIngredientCard = ({ ingredient }) => {
+
+    const navigate = useNavigate();
+    const location = useLocation();
 	const { bun, ingredients } = useSelector((store) => store.burger_constructor);
 
 	const countIngredient = useMemo(() => {
@@ -21,6 +26,11 @@ export const BurgerIngredientCard = ({ ingredient }) => {
 
 	const dispatch = useDispatch();
 
+	const showDialogItem = useCallback(() => {
+        navigate(`/ingredients/${ingredient._id}`, { replace: true, state: { location: location, item: ingredient } });
+       	dispatch(setDisplayIngredient(ingredient))
+    }, [dispatch, navigate, location, ingredient]);
+
 	const [, dragRef] = useDrag({
 		type: ingredient.type,
 		item: ingredient,
@@ -30,7 +40,7 @@ export const BurgerIngredientCard = ({ ingredient }) => {
 		<div
 			ref={dragRef}
 			className={styles.ingredient_card}
-			onClick={() => dispatch(setDisplayIngredient(ingredient))}>
+			onClick={showDialogItem}>
 			{countIngredient > 0 && (
 				<Counter count={countIngredient} size='default' extraClass='m-1' />
 			)}

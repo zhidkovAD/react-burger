@@ -47,7 +47,7 @@ function Modal({
 
 Modal.propTypes = {
 	caption: PropTypes.string,
-	children: PropTypes.arrayOf(PropTypes.element),
+	children: PropTypes.element,
 	onClose: PropTypes.func.isRequired,
 	classNameTitleModal: PropTypes.string,
 	classNameContentModal: PropTypes.string,
