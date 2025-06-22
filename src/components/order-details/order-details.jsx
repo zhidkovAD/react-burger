@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import Modal from '../modal/modal';
 import styles from './order-details.module.css';
 import {
@@ -6,6 +7,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 import { fetchCreateOrder, closeWinOrder } from '../../services/order-details';
 
@@ -15,19 +17,29 @@ function OrderDetails() {
 		(store) => store.burger_constructor
 	);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+    const { userLoggedIn, requestStart } = useSelector((store) => store.auth);
+	const createOrder = useCallback(() => {
+		if (requestStart) {
+            return;
+        }
 
-	const createOrder = () => {
-		const orderIngredients = [...ingredients];
-		if (bun) {
-			orderIngredients.push(bun, bun);
-		}
+        if (!userLoggedIn) {
+            navigate("/login", { replace: true });
+        }
+		else {
+			const orderIngredients = [...ingredients];
+			if (bun) {
+				orderIngredients.push(bun, bun);
+			}
 
-		if (orderIngredients.length == 0) {
-			alert('Нет выбранных ингредиентов!');
-			return;
+			if (orderIngredients.length == 0) {
+				alert('Нет выбранных ингредиентов!');
+				return;
+			}
+			dispatch(fetchCreateOrder(ingredients));
 		}
-		dispatch(fetchCreateOrder(ingredients));
-	};
+	}, [requestStart, userLoggedIn, navigate, ingredients, bun, dispatch]);
 
 	const closeOrder = (e) => {
 		e.stopPropagation();

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { request } from '@utils/request';
-import { setCookie, getCookie } from "@utils/cookie"
+import { setCookie, getCookie, deleteCookie } from "@utils/cookie"
 
 const initialState = {
     requestStart: false,
