@@ -1,0 +1,23 @@
+
+.main_profile {
+	width: 90vw;
+}
+
+.wrap_profile {
+	display: flex;
+    margin-top: 150px;
+}
+
+.li_profile {
+    margin-bottom: 10%;
+}
+
+.navBar {
+	width:25%
+}
+
+.list_menu {
+	padding-left: 0;
+    list-style: none;
+}
+

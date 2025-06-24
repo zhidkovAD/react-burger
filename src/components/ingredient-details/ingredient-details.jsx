@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
 import styles from './ingredient-details.module.css';
-import Modal from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
+import { request } from '@utils/request';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { useState, useMemo  } from 'react';
 
-import { setDisplayIngredient } from '../../services/ingredient-details';
 
 function IngredientDetails() {
 	
@@ -11,70 +11,68 @@ function IngredientDetails() {
 		(store) => store.ingredient_details.displayIngredient
 	);
 
-	const dispatch = useDispatch();
+	const [viewIngredient, setViewIngredient] = useState(null) 
 
-	const closeIngredientDetail = useCallback(
-		(e) => {
-			e.stopPropagation();
-			dispatch(setDisplayIngredient(null));
-		},
-		[dispatch]
-	);
+	const { id } = useParams();
+
+	useMemo(() => {
+        if (ingredientInfo) {
+            setViewIngredient(ingredientInfo);
+        } else if (id) {
+			request("/ingredients")
+			.then((res)=> setViewIngredient(res.data.find(i => i._id === id) ))
+        }
+    }, [ingredientInfo, id]);
 
 	return (
-		<>
-			{ingredientInfo ? (
-				<Modal
-					caption='Детали ингридиента'
-					classNameTitleModal={styles.titleModalIngDetails}
-					classNameContentModal={styles.contentModalIngDetails}
-					onClose={closeIngredientDetail}>
-					<img
-						className={`${styles.image} mb-4`}
-						src={ingredientInfo.image_large}
-						alt='Изображение ингридиента'
-					/>
-					<p
-						className={`${styles.name} text-center text text_type_main-medium mb-8`}>
-						{ingredientInfo.name}
-					</p>
-					<div className={`${styles.detail}`}>
-						<div className={styles.parameterItem}>
-							<div className='text text_type_main-default text_color_inactive mb-2'>
-								Калории,ккал
-							</div>
-							<div className='text-center text text_type_digits-default text_color_inactive'>
-								{ingredientInfo.calories}
-							</div>
+		(
+		 viewIngredient && 
+			<>
+				<img
+					className={`${styles.image} mb-4`}
+					src={viewIngredient.image_large}
+					alt='Изображение ингридиента'
+				/>
+				<p
+					className={`${styles.name} text-center text text_type_main-medium mb-8`}>
+					{viewIngredient.name}
+				</p>
+				<div className={`${styles.detail}`}>
+					<div className={styles.parameterItem}>
+						<div className='text text_type_main-default text_color_inactive mb-2'>
+							Калории,ккал
 						</div>
-						<div className={styles.parameterItem}>
-							<div className='text text_type_main-default text_color_inactive mb-2'>
-								Белки, г
-							</div>
-							<div className='text-center text text_type_digits-default text_color_inactive'>
-								{ingredientInfo.proteins}
-							</div>
-						</div>
-						<div className={styles.parameterItem}>
-							<div className='text text_type_main-default text_color_inactive mb-2'>
-								Жиры, г
-							</div>
-							<div className='text-center text text_type_digits-default text_color_inactive'>
-								{ingredientInfo.fat}
-							</div>
-						</div>
-						<div className={styles.parameterItem}>
-							<div className='text text_type_main-default text_color_inactive mb-2'>
-								Углеводы, г
-							</div>
-							<div className='text-center text text_type_digits-default text_color_inactive'>
-								{ingredientInfo.carbohydrates}
-							</div>
+						<div className='text-center text text_type_digits-default text_color_inactive'>
+							{viewIngredient.calories}
 						</div>
 					</div>
-				</Modal>
-			) : null}
+					<div className={styles.parameterItem}>
+						<div className='text text_type_main-default text_color_inactive mb-2'>
+							Белки, г
+						</div>
+						<div className='text-center text text_type_digits-default text_color_inactive'>
+							{viewIngredient.proteins}
+						</div>
+					</div>
+					<div className={styles.parameterItem}>
+						<div className='text text_type_main-default text_color_inactive mb-2'>
+							Жиры, г
+						</div>
+						<div className='text-center text text_type_digits-default text_color_inactive'>
+							{viewIngredient.fat}
+						</div>
+					</div>
+					<div className={styles.parameterItem}>
+						<div className='text text_type_main-default text_color_inactive mb-2'>
+							Углеводы, г
+						</div>
+						<div className='text-center text text_type_digits-default text_color_inactive'>
+							{viewIngredient.carbohydrates}
+						</div>
+					</div>
+				</div>
 		</>
+		)
 	);
 }
 

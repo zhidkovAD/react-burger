@@ -1,42 +1,46 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import styles from './app.module.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { setDisplayIngredient } from '../../services/ingredient-details';
 
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchIngredients } from '../../services/burger-ingredients';
+import styles from './app.module.css';
+import {AppHeader} from '../app-header/app-header';
+import { MainPage, IngredientPage, 
+    Profile, ProfileEdit, ProfileOrders, ProfileLogout,
+    Login, Register, ResetPassword, ForgotPassword, NotFound404 
+} from '../../pages';
+import ProtectedRoute from '../protected-route';
 
 export const App = () => {
 	const dispatch = useDispatch();
+    const location = useLocation();
+    const stateLocation = location.state && location.state.location;
+    const item = location.state && location.state.item;
 
-	const burgerIngredients = useSelector((store) => store.burger_ingredients);
-
-	useMemo(() => {
-		dispatch(fetchIngredients());
-	}, [dispatch]);
+    useEffect(() => {
+        dispatch(setDisplayIngredient(item));
+    }, [dispatch, item]);
 
 	return (
 		<div className={styles.app}>
 			<AppHeader />
-			{burgerIngredients.loading || burgerIngredients.error ? (
-				<h1 className={`${styles.status} text text_type_main-medium`}>
-					{burgerIngredients.loading
-						? 'Пожалуйста подождите, идет загрузка данных...'
-						: burgerIngredients.error}
-				</h1>
-			) : (
-				<>
-					<h1
-						className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-						Соберите бургер
-					</h1>
-					<main className={`${styles.main} pl-5 pr-5`}>
-						<BurgerIngredients />
-						<BurgerConstructor />
-					</main>
-				</>
-			)}
+			<div className={styles.main}>
+				<Routes location={stateLocation || location}>
+					<Route path="/" element={<MainPage />} />
+					<Route path="/ingredients/:id" element={<IngredientPage />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/reset-password" element={<ResetPassword />} />
+					<Route path="/forgot-password" element={<ForgotPassword />} />
+					<Route path="/profile" element={<ProtectedRoute element={<Profile />} />}>
+						<Route index element={<ProfileEdit />} />
+						<Route path="orders" element={<ProfileOrders />} />
+						<Route path="logout" element={<ProfileLogout />} />
+						<Route path="*" element={<NotFound404 />} />
+					</Route>
+					<Route path="*" element={<NotFound404 />} />
+				</Routes>
+			</div>
 		</div>
 	);
 };

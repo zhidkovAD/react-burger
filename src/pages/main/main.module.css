@@ -1,0 +1,22 @@
+.title {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+}
+
+.status {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+	text-align: center;
+	margin-top: 50%;
+}
+
+.main {
+	display: flex;
+	justify-content: space-between;
+	width: 1240px;
+	height: 85%;
+	margin: 0 auto;
+	overflow: hidden;
+}
