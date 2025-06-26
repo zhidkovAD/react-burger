@@ -2,16 +2,19 @@ import styles from './ingredient-details.module.css';
 import { request } from '@utils/request';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { useState, useMemo  } from 'react';
+import { useState, useMemo, FC  } from 'react';
+
+import { TIngredient } from '@utils/types';
 
 
-function IngredientDetails() {
+
+const IngredientDetails:FC = () => {
 	
 	const ingredientInfo = useSelector(
-		(store) => store.ingredient_details.displayIngredient
+		(store:any) => store.ingredient_details.displayIngredient
 	);
 
-	const [viewIngredient, setViewIngredient] = useState(null) 
+	const [viewIngredient, setViewIngredient] = useState<TIngredient | null>(null) 
 
 	const { id } = useParams();
 
@@ -20,7 +23,7 @@ function IngredientDetails() {
             setViewIngredient(ingredientInfo);
         } else if (id) {
 			request("/ingredients")
-			.then((res)=> setViewIngredient(res.data.find(i => i._id === id) ))
+			.then((res)=> setViewIngredient(res.data.find((i: TIngredient) => i._id === id) ))
         }
     }, [ingredientInfo, id]);
 
@@ -77,3 +80,4 @@ function IngredientDetails() {
 }
 
 export default IngredientDetails;
+

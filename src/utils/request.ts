@@ -7,10 +7,10 @@ const BASE_URL = 'https://norma.nomoreparties.space/api'
 //     }
 //     return Promise.reject(`Ошибка ${res.status}`);
 // }
-function checkResponse(res) {
+function checkResponse(res: Response) {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
 
-export function request(endpoint, options) {
+export function request(endpoint: string, options?: any) {
     return fetch(`${BASE_URL}${endpoint}`, options).then(checkResponse)
-  }
+}

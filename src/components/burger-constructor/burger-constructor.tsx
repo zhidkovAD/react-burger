@@ -1,14 +1,14 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, FC } from 'react';
 import styles from './burger-constructor.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
-import propTypes from 'prop-types';
+
 import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
-import { ingredientPropType } from '../../utils/prop-types';
+import {  TIngredientConstructor } from '@/utils/types';
 import {
 	setSum,
 	setBun,
@@ -17,42 +17,42 @@ import {
 	swapIngredients,
 } from '../../services/burger-constructor';
 
-export const BurgerConstructor = () => {
+export const BurgerConstructor: FC  = () => {
 	const dispatch = useDispatch();
 
-	const { bun, ingredients } = useSelector((store) => store.burger_constructor);
+	const { bun, ingredients } = useSelector((store:any) => store.burger_constructor);
 
 	useEffect(() => {
 		let sum = 0;
 		if (bun) sum += bun.price * 2;
-		sum += ingredients.reduce((sum, item) => (sum += item.price), 0);
+		sum += ingredients.reduce((sum:number, item:TIngredientConstructor) => (sum += item.price), 0);
 		dispatch(setSum(sum));
 	}, [ingredients, bun, dispatch]);
 
 	const [, dropTargetBunUp] = useDrop({
 		accept: 'bun',
 		drop(item) {
-			dispatch(setBun(item));
+			dispatch(setBun(item) as any);
 		},
 	});
 
 	const [, dropTargetBunDown] = useDrop({
 		accept: 'bun',
 		drop(item) {
-			dispatch(setBun(item));
+			dispatch(setBun(item) as any);
 		},
 	});
 
 	const [, dropTargetIngredient] = useDrop({
 		accept: ['sauce', 'main'],
 		drop(item) {
-			dispatch(addIngredient(item));
+			dispatch(addIngredient(item) as any);
 		},
 	});
 
 	const handleDeleteIngredient = useCallback(
-		(index) => {
-			dispatch(deleteIngredient(index));
+		(index:number) => {
+			dispatch(deleteIngredient(index) as any);
 		},
 		[dispatch]
 	);
@@ -86,7 +86,7 @@ export const BurgerConstructor = () => {
 					className={`${styles.container_ingredients} mt-4 mb-4`}
 					ref={dropTargetIngredient}>
 					{ingredients && ingredients.length > 0 ? (
-						ingredients.map((ingredient, index) => (
+						ingredients.map((ingredient:TIngredientConstructor, index:number) => (
 							<BurgerConstructorIngredient
 								key={ingredient.uniqueId }
 								ingredient={ingredient}
@@ -131,8 +131,14 @@ export const BurgerConstructor = () => {
 	);
 };
 
-function BurgerConstructorIngredient({ ingredient, index, onDelete }) {
-	const ref = useRef(null);
+type TProps = {
+    ingredient: TIngredientConstructor;
+    index: number;
+    onDelete: (index: number) => void;
+};
+
+const BurgerConstructorIngredient: FC<TProps> = ({ ingredient, index, onDelete }) => {
+	const ref = useRef<HTMLLIElement>(null);
 
 	const dispatch = useDispatch();
 
@@ -143,9 +149,9 @@ function BurgerConstructorIngredient({ ingredient, index, onDelete }) {
 
 	const [, drop] = useDrop({
 		accept: 'sort',
-		drop(item) {
+		drop(item:TIngredientConstructor) {
 			if (index !== item.index) {
-				dispatch(swapIngredients({ index1: index, index2: item.index }));
+				dispatch(swapIngredients({ index1: index, index2: item.index }) as any);
 			}
 		},
 	});
@@ -167,9 +173,3 @@ function BurgerConstructorIngredient({ ingredient, index, onDelete }) {
 		</li>
 	);
 }
-
-BurgerConstructorIngredient.propTypes = {
-	ingredient: ingredientPropType.isRequired,
-	index: propTypes.number,
-	onDelete: propTypes.func.isRequired,
-};

@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import styles from './app-header.module.css';
 import {
 	BurgerIcon,
@@ -6,7 +7,7 @@ import {
 	Logo,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const AppHeader = () => {
+export const AppHeader:FC = () => {
 	return (
 		<header className={styles.header}>
 			<nav className={`${styles.menu} p-4`}>

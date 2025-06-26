@@ -1,8 +1,8 @@
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, FC, SyntheticEvent } from 'react';
 import styles from './ingredient-card.module.css';
 
 import { useDrag } from 'react-dnd';
-import { ingredientPropType } from '@utils/prop-types.js';
+import { TIngredient } from '@utils/types';
 import {
 	Counter,
 	CurrencyIcon,
@@ -11,24 +11,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { setDisplayIngredient } from '../../../services/ingredient-details';
 
-export const BurgerIngredientCard = ({ ingredient }) => {
+type TProps = {
+    ingredient: TIngredient;
+};
+
+export const BurgerIngredientCard:FC<TProps> = ({ ingredient }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-	const { bun, ingredients } = useSelector((store) => store.burger_constructor);
+	const { bun, ingredients } = useSelector((store:any) => store.burger_constructor);
 
 	const countIngredient = useMemo(() => {
 		if (bun && ingredient._id == bun._id) {
 			return 2;
 		}
-		return ingredients.filter((ingr) => ingr._id == ingredient._id).length;
+		return ingredients.filter((ingr:TIngredient) => ingr._id == ingredient._id).length;
 	}, [bun, ingredients]);
 
 	const dispatch = useDispatch();
 
-	const showDialogItem = useCallback(() => {
+	const showDialogItem = useCallback((e: SyntheticEvent) => {
+		e.preventDefault();
         navigate(`/ingredients/${ingredient._id}`, { replace: true, state: { location: location, item: ingredient } });
-       	dispatch(setDisplayIngredient(ingredient))
+       	dispatch(setDisplayIngredient(ingredient) as any)
     }, [dispatch, navigate, location, ingredient]);
 
 	const [, dragRef] = useDrag({
@@ -58,8 +63,4 @@ export const BurgerIngredientCard = ({ ingredient }) => {
 			</div>
 		</div>
 	);
-};
-
-BurgerIngredientCard.propTypes = {
-	ingredient: ingredientPropType.isRequired,
 };

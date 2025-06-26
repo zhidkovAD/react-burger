@@ -19,11 +19,11 @@ const AuthReducer = createSlice({
 	initialState: initialState,
 	reducers: {
 		authRegisterStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authRegisterSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: true }),
+		authRegisterSuccess: (state, action) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
 		authRegisterError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
 
         authLoginStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authLoginSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: true }),
+		authLoginSuccess: (state, action) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
 		authLoginError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
 		
         authLogoutStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
@@ -83,7 +83,7 @@ export const register = (form) => (dispatch) => {
                 setCookie("accessToken", accessToken);
                 localStorage.setItem("refreshToken", refreshToken);
             }
-            dispatch(authRegisterSuccess());
+            dispatch(authRegisterSuccess({...result.user}));
         })
         .catch(err => {
             dispatch(authRegisterError(err.message));
@@ -108,7 +108,7 @@ export const login = (form) => (dispatch) => {
                 setCookie("accessToken", accessToken);
                 localStorage.setItem("refreshToken", refreshToken);
             }
-            dispatch(authLoginSuccess());
+            dispatch(authLoginSuccess({...result.user}));
         })
         .catch(err => {
             dispatch(authLoginError(err.message));
@@ -117,9 +117,7 @@ export const login = (form) => (dispatch) => {
 
 export const logout = () => (dispatch) => {
     dispatch(authLogoutStart());
-    localStorage.removeItem("refreshToken");
-    deleteCookie("accessToken");
-
+   
     const options = {
 		method: 'POST',
 		headers: {
@@ -133,6 +131,10 @@ export const logout = () => (dispatch) => {
         })
         .catch(err => {
             dispatch(authLogoutError(err.message));
+        })
+        .finally(() => {
+            localStorage.removeItem("refreshToken");
+            deleteCookie("accessToken");
         });
 }
 
@@ -225,6 +227,14 @@ export function getUser() {
         .catch(err => {
             dispatch(authGetUserError(err.message));
         });
+    }
+}
+
+export function authCheckUser() {
+    return function (dispatch) {
+        if (getCookie("accessToken")) {
+            dispatch(getUser())
+        }
     }
 }
 
