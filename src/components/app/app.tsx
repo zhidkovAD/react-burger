@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { setDisplayIngredient } from '../../services/ingredient-details';
+import { authCheckUser } from '../../services/auth';
 
 import styles from './app.module.css';
 import {AppHeader} from '../app-header/app-header';
@@ -14,11 +15,16 @@ import ProtectedRoute from '../protected-route';
 export const App = () => {
 	const dispatch = useDispatch();
     const location = useLocation();
+
+	useEffect(() => {
+        dispatch(authCheckUser() as any);
+    }, [dispatch]);
+
     const stateLocation = location.state && location.state.location;
     const item = location.state && location.state.item;
 
     useEffect(() => {
-        dispatch(setDisplayIngredient(item));
+        dispatch(setDisplayIngredient(item) as any);
     }, [dispatch, item]);
 
 	return (
@@ -29,9 +35,9 @@ export const App = () => {
 					<Route path="/" element={<MainPage />} />
 					<Route path="/ingredients/:id" element={<IngredientPage />} />
 					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
-					<Route path="/reset-password" element={<ResetPassword />} />
-					<Route path="/forgot-password" element={<ForgotPassword />} />
+					<Route path="/register" element={<ProtectedRoute anonymous element={<Register />} />} />
+                    <Route path="/reset-password" element={<ProtectedRoute anonymous element={<ResetPassword />} />} />
+                    <Route path="/forgot-password" element={<ProtectedRoute anonymous element={<ForgotPassword />} />} />
 					<Route path="/profile" element={<ProtectedRoute element={<Profile />} />}>
 						<Route index element={<ProfileEdit />} />
 						<Route path="orders" element={<ProfileOrders />} />

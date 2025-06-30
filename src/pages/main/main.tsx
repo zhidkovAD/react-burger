@@ -1,8 +1,8 @@
-import React, {  useMemo } from 'react';
+import {  useMemo } from 'react';
 import styles from './main.module.css';
 
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor.jsx';
+import { BurgerIngredients } from '@/components/burger-ingredients/burger-ingredients';
+import { BurgerConstructor } from '@/components/burger-constructor/burger-constructor';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/burger-ingredients';
 
@@ -10,10 +10,10 @@ function MainPage() {
 
     const dispatch = useDispatch();
 
-	const burgerIngredients = useSelector((store) => store.burger_ingredients);
+	const burgerIngredients = useSelector((store:any) => store.burger_ingredients);
 
 	useMemo(() => {
-		dispatch(fetchIngredients());
+		dispatch(fetchIngredients() as any);
 	}, [dispatch]);
 
     return (

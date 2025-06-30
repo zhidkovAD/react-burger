@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, FC } from 'react';
 import Modal from '../modal/modal';
 import styles from './order-details.module.css';
 import {
@@ -10,20 +10,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { fetchCreateOrder, closeWinOrder } from '../../services/order-details';
+import { TIngredientConstructor } from '@utils/types';
 
-function OrderDetails() {
-	const { orderNumber, loading } = useSelector((store) => store.order_details);
+const OrderDetails:FC = () => {
+	const { orderNumber, loading } = useSelector((store:any) => store.order_details);
 	const { sum, ingredients, bun } = useSelector(
-		(store) => store.burger_constructor
+		(store:any) => store.burger_constructor
 	);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-    const { userLoggedIn, requestStart } = useSelector((store) => store.auth);
+    const { userLoggedIn, requestStart } = useSelector((store:any) => store.auth);
 	const createOrder = useCallback(() => {
 		if (requestStart) {
             return;
         }
-
         if (!userLoggedIn) {
             navigate("/login", { replace: true });
         }
@@ -37,13 +37,13 @@ function OrderDetails() {
 				alert('Нет выбранных ингредиентов!');
 				return;
 			}
-			dispatch(fetchCreateOrder(ingredients));
+			dispatch(fetchCreateOrder(ingredients as Array<TIngredientConstructor>) as any);
 		}
 	}, [requestStart, userLoggedIn, navigate, ingredients, bun, dispatch]);
 
-	const closeOrder = (e) => {
-		e.stopPropagation();
-		dispatch(closeWinOrder());
+	const closeOrder = (e?: Event) => {
+		e?.stopPropagation()
+		dispatch(closeWinOrder() as any);
 	};
 
 	return (
@@ -92,3 +92,8 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
+
+
+
+
+
