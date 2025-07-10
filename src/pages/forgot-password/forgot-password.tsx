@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
-import { forgotPassword } from '../../services/auth';
+import { forgotPassword } from '@/services/auth';
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Preloader } from '../../components/preloader/preloader';
 import { TForgotPassword, TSubmit } from '@utils/types';
@@ -15,7 +15,7 @@ function ForgotPassword() {
     const navigate = useNavigate();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(forgotPassword(state) as any);
+        dispatch(forgotPassword(state));
     }, [dispatch]);
 
     const { state, onChange, onSubmit } = useForm<TState>({

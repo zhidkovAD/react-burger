@@ -14,7 +14,7 @@ function ProfileEdit() {
     const dispatch = useDispatch();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(patchUser(state) as any);
+        dispatch(patchUser(state));
         setNameDisabled(true);
     }, [dispatch]);
 
@@ -27,7 +27,6 @@ function ProfileEdit() {
     }, submitCb);
 
     useEffect(() => {
-        console.log("TETS")
         if (requestSuccess) {
             setState({ name: user?.name, email: user?.email, password: "" });
         }

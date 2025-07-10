@@ -9,8 +9,10 @@ import Register from './register/register';
 import ResetPassword from './reset-password/reset-password';
 import ForgotPassword from './forgot-password/forgot-password';
 import NotFound404 from './404/404';
+import FeedPage from './feed/feed';
+import OrderPage from './order/order';
 
 export { MainPage, IngredientPage, 
     Profile, ProfileEdit, ProfileOrders, ProfileLogout,
-    Login, Register, ResetPassword, ForgotPassword, NotFound404 
+    Login, Register, ResetPassword, ForgotPassword, NotFound404, FeedPage, OrderPage
 };

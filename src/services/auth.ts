@@ -1,8 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { request } from '@utils/request';
 import { setCookie, getCookie, deleteCookie } from "@utils/cookie"
+import { AppDispatch, TForgotPassword, TLoginUser, TPatchUser, TRegisterUser, TResetPassword, TUser } from "@utils/types"
 
-const initialState = {
+// Определяем тип для начального состояния
+type TAuth = {
+    requestStart: boolean;
+	requestError: null | string;
+	requestSuccess: boolean;
+    userLoggedIn: boolean;
+    user: TUser;
+    forgotPassword: boolean;
+}
+
+const initialState: TAuth = {
     requestStart: false,
     requestError: null,
     requestSuccess: false,
@@ -14,39 +25,39 @@ const initialState = {
     forgotPassword: false
 };
 
-const AuthReducer = createSlice({
+const authReducer = createSlice({
 	name: 'auth',
 	initialState: initialState,
 	reducers: {
-		authRegisterStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authRegisterSuccess: (state, action) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
-		authRegisterError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+		authRegisterStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
+		authRegisterSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
+		authRegisterError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
 
-        authLoginStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authLoginSuccess: (state, action) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
-		authLoginError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+        authLoginStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
+		authLoginSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
+		authLoginError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
 		
-        authLogoutStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authLogoutSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: false }),
-		authLogoutError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+        authLogoutStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
+		authLogoutSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: false }),
+		authLogoutError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
 
-        authForgotPasswordStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false, forgotPassword: false }),
-		authForgotPasswordSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, forgotPassword: true }),
-		authForgotPasswordError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, forgotPassword: false }),
+        authForgotPasswordStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false, forgotPassword: false }),
+		authForgotPasswordSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, forgotPassword: true }),
+		authForgotPasswordError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, forgotPassword: false }),
 
-        authResetPasswordStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authResetPasswordSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true }),
-		authResetPasswordError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false }),
+        authResetPasswordStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
+		authResetPasswordSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true }),
+		authResetPasswordError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false }),
 
-        authGetUserStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false, user: initialState.user }),
-		authGetUserSuccess: (state, action) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
-		authGetUserError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, user: initialState.user, userLoggedIn: false }),
+        authGetUserStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false, user: initialState.user }),
+		authGetUserSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
+		authGetUserError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, user: initialState.user, userLoggedIn: false }),
 
-        authPatchUserStart: (state) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authPatchUserSuccess: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true }),
-		authPatchUserError: (state, action) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false }),
+        authPatchUserStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
+		authPatchUserSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true }),
+		authPatchUserError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false }),
 
-        authClearErrors: (state) => ({ ...state, requestStart: false, requestError: null, requestSuccess: false }),
+        authClearErrors: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: false }),
 	},
 });
 
@@ -59,12 +70,12 @@ export const {
     authGetUserStart, authGetUserSuccess, authGetUserError,
     authPatchUserStart, authPatchUserSuccess, authPatchUserError,
 	authClearErrors,
-} = AuthReducer.actions;
+} = authReducer.actions;
 
-export default AuthReducer.reducer;
+export default authReducer.reducer;
 
 
-export const register = (form) => (dispatch) => {
+export const register = (form: TRegisterUser) => (dispatch:AppDispatch) => {
     dispatch(authRegisterStart());
 
     const options = {
@@ -90,7 +101,7 @@ export const register = (form) => (dispatch) => {
         });
 }
 
-export const login = (form) => (dispatch) => {
+export const login = (form: TLoginUser) => (dispatch: AppDispatch) => {
     dispatch(authLoginStart());
 
     const options = {
@@ -115,7 +126,7 @@ export const login = (form) => (dispatch) => {
         });
 }
 
-export const logout = () => (dispatch) => {
+export const logout = () => (dispatch: AppDispatch) => {
     dispatch(authLogoutStart());
    
     const options = {
@@ -139,7 +150,7 @@ export const logout = () => (dispatch) => {
 }
 
 
-export const forgotPassword = (form) => (dispatch) => {
+export const forgotPassword = (form:TForgotPassword) => (dispatch: AppDispatch) => {
     dispatch(authForgotPasswordStart());
     const options = {
 		method: 'POST',
@@ -158,7 +169,7 @@ export const forgotPassword = (form) => (dispatch) => {
         });
 }
 
-export const resetPassword = (form) => (dispatch) => {
+export const resetPassword = (form:TResetPassword) => (dispatch: AppDispatch) => {
     dispatch(authResetPasswordStart());
     const options = {
 		method: 'POST',
@@ -192,7 +203,7 @@ export function refreshToken() {
 
 
 
-function requestWithRefresh(url, options) {
+function requestWithRefresh(url:string, options: any) {
     return request(url, options)
         .catch(err => {
             if (err.message === "jwt expired") {
@@ -212,7 +223,7 @@ function requestWithRefresh(url, options) {
 }
 
 export function getUser() {
-    return function (dispatch) {
+    return function (dispatch:AppDispatch) {
         dispatch(authGetUserStart());
         requestWithRefresh(`/auth/user`, {
                 method: "GET",
@@ -231,7 +242,7 @@ export function getUser() {
 }
 
 export function authCheckUser() {
-    return function (dispatch) {
+    return function (dispatch:AppDispatch) {
         if (getCookie("accessToken")) {
             dispatch(getUser())
         }
@@ -239,8 +250,8 @@ export function authCheckUser() {
 }
 
 
-export function patchUser(form) {
-    return function (dispatch) {
+export function patchUser(form: TPatchUser) {
+    return function (dispatch:AppDispatch) {
         dispatch(authPatchUserStart());
         requestWithRefresh(`/auth/user`, {
                 method: "PATCH",

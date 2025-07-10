@@ -1,3 +1,7 @@
+import { store } from "@/services/store";
+import { Action, ActionCreator } from "redux";
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+
 export type TIngredient = {
     _id: string;
     name: string;
@@ -13,14 +17,21 @@ export type TIngredient = {
     __v: number;
 };
 
+export type TIngredientQty = TIngredient & {
+    qty: number;
+}
+
 export type TIngredientConstructor = TIngredient & {
     uniqueId: string;
     index: number;
 };
 
-export type TRegisterUser = {
+export type TUser = {
     name: string;
     email: string;
+};
+
+export type TRegisterUser = TUser & {
     password: string;
 };
 
@@ -42,8 +53,30 @@ export type TResetPassword = {
     token: string;
 };
 
-export type TPatchUser = {
-    name: string;
-    email: string;
+export type TPatchUser = TUser & {
     password: string;
 };
+
+export type TOrder = {
+    ingredients: Array<string>;
+    _id: string;
+    status: string;
+    name: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export type TOrdersList = {
+    orders: Array<TOrder>;
+    total: number;
+    totalToday: number;
+}
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type TDispatch = typeof store.dispatch;
+
+export type AppDispatch = ThunkDispatch<RootState, never>;
+
+export type AppThunk< ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, Action> >;

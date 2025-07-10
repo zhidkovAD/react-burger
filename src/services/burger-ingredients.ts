@@ -1,6 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { AppDispatch, TIngredient } from '@/utils/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { request } from '@utils/request';
+
+// Определяем тип для начального состояния
+type TBurgerIngredients = {
+    ingredients: Array<TIngredient>;
+	loading: boolean;
+	error: string | boolean;
+	tab: string;
+}
 
 const initialState = {
 	ingredients: [],
@@ -13,26 +22,26 @@ const ingredientsReducer = createSlice({
 	name: 'burger_ingredients',
 	initialState,
 	reducers: {
-		requestIngredients: (state) => ({
+		requestIngredients: (state:TBurgerIngredients) => ({
 			...state,
 			loading: true,
 			error: false,
 		}),
-		successRequestIngredients: (state, action) => ({
+		successRequestIngredients: (state:TBurgerIngredients, action: PayloadAction<Array<TIngredient>>) => ({
 			...state,
 			loading: false,
 			ingredients: action.payload,
 		}),
-		errorRequestIngredients: (state, action) => ({
+		errorRequestIngredients: (state:TBurgerIngredients, action: PayloadAction<string | boolean>) => ({
 			...state,
 			loading: false,
 			error: action.payload,
 			ingredients: [],
 		}),
-		setTab: (state, action) => ({
+		setTab: (state:TBurgerIngredients, action: PayloadAction<string>) => ({
 			...state,
 			tab: action.payload,
-		}),
+		})
 	},
 });
 
@@ -47,7 +56,7 @@ export default ingredientsReducer.reducer;
 
 
 // усилитель
-export const fetchIngredients = () => (dispatch) => {
+export const fetchIngredients = () => (dispatch:AppDispatch) => {
 	dispatch(requestIngredients());
 	request("/ingredients")
 		.then((res) => dispatch(successRequestIngredients(res.data)))

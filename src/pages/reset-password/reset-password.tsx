@@ -17,7 +17,7 @@ function ResetPassword() {
     const navigate = useNavigate();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(resetPassword(state) as any);
+        dispatch(resetPassword(state));
     }, [dispatch]);
 
     const { state, onChange, onSubmit } = useForm<TState>({

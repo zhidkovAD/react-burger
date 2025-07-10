@@ -15,7 +15,7 @@ function Register() {
     const navigate = useNavigate();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(register(state) as any);
+        dispatch(register(state) );
     }, [dispatch]);
 
     const { state, onChange, onSubmit } = useForm<TState>({

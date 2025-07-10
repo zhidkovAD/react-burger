@@ -12,7 +12,7 @@ function ProfileLogout() {
 
     useEffect(() => {
         if (userLoggedIn) {
-            dispatch(logout() as any);
+            dispatch(logout());
         } else {
             navigate("/login", { replace: true });
         }

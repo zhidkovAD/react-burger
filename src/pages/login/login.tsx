@@ -16,7 +16,7 @@ function Login() {
     const location = useLocation();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(login(state) as any);
+        dispatch(login(state));
     }, [dispatch]);
 
     const { state, onChange, onSubmit } = useForm<TState>({
