@@ -2,7 +2,7 @@ import  { useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsCategory } from './ingredients-category/intgredients-category';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 
 import { setTab } from '../../services/burger-ingredients';
 

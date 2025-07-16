@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { useNavigate } from 'react-router';
 import { logout } from '../../services/auth';
 import { Preloader } from '../../components/preloader/preloader';

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { useForm } from '../../hooks/useForm';
 import { patchUser } from '../../services/auth';
 

@@ -1,6 +1,6 @@
 import styles from './ingredient-details.module.css';
 import { request } from '@utils/request';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/redux';
 import { useParams } from 'react-router';
 import { useState, useMemo, FC  } from 'react';
 

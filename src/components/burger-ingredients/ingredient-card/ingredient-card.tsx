@@ -7,7 +7,7 @@ import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../hooks/redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getBurgerConstructor } from '@/services/selectors';
 

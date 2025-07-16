@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { login } from '../../services/auth';

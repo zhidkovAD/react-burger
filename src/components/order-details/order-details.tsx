@@ -6,7 +6,7 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { useNavigate } from 'react-router';
 
 import { fetchCreateOrder, closeWinOrder } from '../../services/order-details';

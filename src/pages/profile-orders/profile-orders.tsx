@@ -7,14 +7,16 @@ import { WS_URL } from '@utils/request';
 import styles from './profile-orders.module.css';
 import {Preloader} from '../../components/preloader/preloader';
 import OrdersList from '../../components/orders-list/orders-list';
-
+import { fetchIngredients } from '@/services/burger-ingredients';
 import { TOrdersList } from '@utils/types';
 
 function ProfileOrders() {
 
     const dispatch = useDispatch();
     const { connected, error, message } = useSelector(getOrdersUser);
-
+    useMemo(() => {
+         dispatch(fetchIngredients());
+    }, [dispatch]);
     //заказы пользователя почему-то приходят в прямом порядке
     const messageSorted: TOrdersList | null = useMemo(() => {
         if (!message) {

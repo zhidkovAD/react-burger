@@ -3,7 +3,7 @@ import styles from './main.module.css';
 
 import { BurgerIngredients } from '@/components/burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '@/components/burger-constructor/burger-constructor';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { fetchIngredients } from '@/services/burger-ingredients';
 import { getIngredients } from '@/services/selectors';
 

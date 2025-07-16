@@ -2,6 +2,7 @@ import { AppDispatch, TIngredient } from '@/utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { request } from '@utils/request';
 import { clearBurgerConstructor } from './burger-constructor';
+import { getCookie } from '@/utils/cookie';
 
 // Определяем тип для начального состояния
 type TCreateOrderState = {
@@ -56,11 +57,11 @@ export const fetchCreateOrder = (ingredients:Array<TIngredient>) => (dispatch:Ap
 	const options = {
 		method: 'POST',
 		headers: {
+			Authorization: "Bearer " + getCookie("accessToken"),
 			'Content-Type': 'application/json;charset=utf-8',
 		},
 		body: JSON.stringify({ ingredients: ingredients.map((ing) => ing._id) }),
 	}
-
 	request('/orders', options)
 		.then((res) => {
 			dispatch(successRequestCreateOrder(res.order.number))
