@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { register } from '../../services/auth';
@@ -15,7 +15,7 @@ function Register() {
     const navigate = useNavigate();
 
     const submitCb = useCallback((state:TState) => {
-        dispatch(register(state) as any);
+        dispatch(register(state) );
     }, [dispatch]);
 
     const { state, onChange, onSubmit } = useForm<TState>({

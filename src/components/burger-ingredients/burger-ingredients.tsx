@@ -1,22 +1,18 @@
-import  { useRef, useCallback } from 'react';
+import  { useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIngredientsCategory } from './ingredients-category/intgredients-category';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from '../../hooks/redux';
+
 import { setTab } from '../../services/burger-ingredients';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
-import { setDisplayIngredient } from '../../services/ingredient-details';
+
 import { TIngredient } from '@/utils/types';
+import { getIngredients } from '@/services/selectors';
 
 export const BurgerIngredients = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const ingredients = useSelector(
-		(store:any) => store.burger_ingredients.ingredients
-	);
-	const tab = useSelector((store:any) => store.burger_ingredients.tab);
+
+	const {ingredients, tab} = useSelector(getIngredients);
 
 
 	const headers: Record<string, React.RefObject<HTMLHeadingElement>> = {};
@@ -28,7 +24,7 @@ export const BurgerIngredients = () => {
 	const refContainer: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
 	const tabClick = (value:string) => {
-		dispatch(setTab(value) as any);
+		dispatch(setTab(value));
 		// При использовании scrollIntoView({ behavior: "smooth" }) пропадал элемент nav (возможно проблема со стилями), поэтому выполнил реализацию через scrollTo
 		let element = headers[value].current;
 		if (element && refContainer.current) {
@@ -54,22 +50,9 @@ export const BurgerIngredients = () => {
 		const newTab = Object.keys(headers)[minIndex];
 
 		if (tab !== newTab) {
-			dispatch(setTab(newTab) as any);
+			dispatch(setTab(newTab));
 		}
 	}
-
-	const closeIngredientDetail = useCallback(
-		(e?: Event) => {
-			navigate("/", { replace: true });
-			dispatch(setDisplayIngredient(null) as any);
-			e?.stopPropagation();
-		},
-		[dispatch,navigate]
-	);
-
-	const ingredientInfo = useSelector(
-		(store:any) => store.ingredient_details.displayIngredient
-	);
 
 	return (
 		<section className={styles.burger_ingredients}>
@@ -112,13 +95,6 @@ export const BurgerIngredients = () => {
 					)}
 				/>
 			</div>
-			{ingredientInfo && (
-                <Modal caption="Детали ингридиента" classNameTitleModal={styles.titleModalIngDetails}
-									classNameContentModal={styles.contentModalIngDetails}
-									onClose={closeIngredientDetail}>
-                    <IngredientDetails />
-                </Modal>
-            )}
 		</section>
 	);
 };

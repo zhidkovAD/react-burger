@@ -1,18 +1,16 @@
 import styles from './ingredient-details.module.css';
 import { request } from '@utils/request';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/redux';
 import { useParams } from 'react-router';
 import { useState, useMemo, FC  } from 'react';
 
 import { TIngredient } from '@utils/types';
-
+import { getDisplayIngredient } from '@/services/selectors';
 
 
 const IngredientDetails:FC = () => {
 	
-	const ingredientInfo = useSelector(
-		(store:any) => store.ingredient_details.displayIngredient
-	);
+	const ingredientInfo: TIngredient | null  = useSelector(getDisplayIngredient);
 
 	const [viewIngredient, setViewIngredient] = useState<TIngredient | null>(null) 
 

@@ -6,17 +6,16 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { useNavigate } from 'react-router';
 
 import { fetchCreateOrder, closeWinOrder } from '../../services/order-details';
-import { TIngredientConstructor } from '@utils/types';
+import { TIngredient } from '@utils/types';
+import { getBurgerConstructor, getOrderDetails } from '@/services/selectors';
 
 const OrderDetails:FC = () => {
-	const { orderNumber, loading } = useSelector((store:any) => store.order_details);
-	const { sum, ingredients, bun } = useSelector(
-		(store:any) => store.burger_constructor
-	);
+	const { orderNumber, loading } = useSelector(getOrderDetails);
+	const { sum, ingredients, bun } = useSelector(getBurgerConstructor);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
     const { userLoggedIn, requestStart } = useSelector((store:any) => store.auth);
@@ -28,22 +27,23 @@ const OrderDetails:FC = () => {
             navigate("/login", { replace: true });
         }
 		else {
-			const orderIngredients = [...ingredients];
+			const orderIngredients: Array<TIngredient> = [...ingredients];
 			if (bun) {
-				orderIngredients.push(bun, bun);
+				orderIngredients.unshift(bun);
+                orderIngredients.push(bun);
 			}
 
 			if (orderIngredients.length == 0) {
 				alert('Нет выбранных ингредиентов!');
 				return;
 			}
-			dispatch(fetchCreateOrder(ingredients as Array<TIngredientConstructor>) as any);
+			dispatch(fetchCreateOrder(orderIngredients));
 		}
 	}, [requestStart, userLoggedIn, navigate, ingredients, bun, dispatch]);
 
 	const closeOrder = (e?: Event) => {
 		e?.stopPropagation()
-		dispatch(closeWinOrder() as any);
+		dispatch(closeWinOrder());
 	};
 
 	return (

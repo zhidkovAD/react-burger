@@ -70,3 +70,35 @@
 .custom_scroll::-moz-scrollbar-thumb:hover {
 	background: #555555;
 }
+
+.titleModalIngDetails {
+	margin-top: 40px;
+	margin-inline: 40px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.contentModalIngDetails {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 200px;
+	align-items: center;
+	margin-bottom: 60px;
+}
+
+.titleModalOrdersDetails {
+	margin-top: 40px;
+	margin-inline: 40px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.contentModalOrdersDetails {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 200px;
+	align-items: center;
+	padding:24px
+}

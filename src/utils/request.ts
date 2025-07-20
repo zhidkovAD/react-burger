@@ -7,6 +7,9 @@ const BASE_URL = 'https://norma.nomoreparties.space/api'
 //     }
 //     return Promise.reject(`Ошибка ${res.status}`);
 // }
+
+export const WS_URL = "wss://norma.nomoreparties.space";
+
 function checkResponse(res: Response) {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }

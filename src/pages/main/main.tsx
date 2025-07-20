@@ -3,25 +3,26 @@ import styles from './main.module.css';
 
 import { BurgerIngredients } from '@/components/burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '@/components/burger-constructor/burger-constructor';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchIngredients } from '../../services/burger-ingredients';
+import { useDispatch, useSelector } from '../../hooks/redux';
+import { fetchIngredients } from '@/services/burger-ingredients';
+import { getIngredients } from '@/services/selectors';
 
 function MainPage() {
 
     const dispatch = useDispatch();
 
-	const burgerIngredients = useSelector((store:any) => store.burger_ingredients);
+	const { error, loading } = useSelector(getIngredients);
 
 	useMemo(() => {
-		dispatch(fetchIngredients() as any);
+		dispatch(fetchIngredients());
 	}, [dispatch]);
 
     return (
-        (burgerIngredients.loading || burgerIngredients.error ? (
+        (loading || error ? (
             <h1 className={`${styles.status} text text_type_main-medium`}>
-                {burgerIngredients.loading
+                {loading
                     ? 'Пожалуйста подождите, идет загрузка данных...'
-                    : burgerIngredients.error}
+                    : error}
             </h1>
         ) : (
             <>

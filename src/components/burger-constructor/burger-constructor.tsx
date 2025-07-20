@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useRef, FC } from 'react';
 import styles from './burger-constructor.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/redux';
 import { useDrop, useDrag } from 'react-dnd';
 
 import {
@@ -17,10 +17,12 @@ import {
 	swapIngredients,
 } from '../../services/burger-constructor';
 
+import { getBurgerConstructor } from '@/services/selectors';
+
 export const BurgerConstructor: FC  = () => {
 	const dispatch = useDispatch();
 
-	const { bun, ingredients } = useSelector((store:any) => store.burger_constructor);
+	const { bun, ingredients } = useSelector(getBurgerConstructor);
 
 	useEffect(() => {
 		let sum = 0;
@@ -31,28 +33,28 @@ export const BurgerConstructor: FC  = () => {
 
 	const [, dropTargetBunUp] = useDrop({
 		accept: 'bun',
-		drop(item) {
-			dispatch(setBun(item) as any);
+		drop(item:TIngredientConstructor) {
+			dispatch(setBun(item));
 		},
 	});
 
 	const [, dropTargetBunDown] = useDrop({
 		accept: 'bun',
-		drop(item) {
-			dispatch(setBun(item) as any);
+		drop(item:TIngredientConstructor) {
+			dispatch(setBun(item));
 		},
 	});
 
 	const [, dropTargetIngredient] = useDrop({
 		accept: ['sauce', 'main'],
-		drop(item) {
-			dispatch(addIngredient(item) as any);
+		drop(item:TIngredientConstructor) {
+			dispatch(addIngredient(item));
 		},
 	});
 
 	const handleDeleteIngredient = useCallback(
 		(index:number) => {
-			dispatch(deleteIngredient(index) as any);
+			dispatch(deleteIngredient(index));
 		},
 		[dispatch]
 	);
@@ -151,7 +153,7 @@ const BurgerConstructorIngredient: FC<TProps> = ({ ingredient, index, onDelete }
 		accept: 'sort',
 		drop(item:TIngredientConstructor) {
 			if (index !== item.index) {
-				dispatch(swapIngredients({ index1: index, index2: item.index }) as any);
+				dispatch(swapIngredients({ index1: index, index2: item.index }));
 			}
 		},
 	});
