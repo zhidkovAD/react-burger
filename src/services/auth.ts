@@ -137,7 +137,7 @@ export const logout = () => (dispatch: AppDispatch) => {
 		body: JSON.stringify({token: localStorage.getItem("refreshToken")}),
 	}
     request('/auth/logout', options)
-        .then(result => {
+        .then(() => {
             dispatch(authLogoutSuccess());
         })
         .catch(err => {
@@ -161,7 +161,7 @@ export const forgotPassword = (form:TForgotPassword) => (dispatch: AppDispatch) 
 	}
 
     request('/password-reset', options)
-        .then(result => {
+        .then(() => {
             dispatch(authForgotPasswordSuccess());
         })
         .catch(err => {
@@ -180,7 +180,7 @@ export const resetPassword = (form:TResetPassword) => (dispatch: AppDispatch) =>
 	}
 
     request('/password-reset/reset', options)
-        .then(result => {
+        .then(() => {
             dispatch(authResetPasswordSuccess());
         })
         .catch(err => {
@@ -261,7 +261,7 @@ export function patchUser(form: TPatchUser) {
                 },
                 body: JSON.stringify({ ...form })
             })
-        .then(result => {
+        .then(() => {
                 dispatch(authPatchUserSuccess());
             })
         .catch(err => {

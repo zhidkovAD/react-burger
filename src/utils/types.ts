@@ -1,6 +1,7 @@
 import { store } from "@/services/store";
-import { Action, ActionCreator } from "redux";
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { Action } from "redux";
+// import { Action, ActionCreator } from "redux";
+import { ThunkDispatch } from 'redux-thunk'; // ThunkAction, 
 
 export type TIngredient = {
     _id: string;
@@ -77,6 +78,6 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type TDispatch = typeof store.dispatch;
 
-export type AppDispatch = ThunkDispatch<RootState, never>;
+export type AppDispatch = ThunkDispatch<RootState, never, Action>;
 
-export type AppThunk< ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, Action> >;
+// export type AppThunk< ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, Action> >;
