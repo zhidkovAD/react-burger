@@ -14,7 +14,7 @@ type TBurgerConstructorSwap = {
 	index2: number;
 }
 
-const initialState: TBurgerConstructor = {
+export const initialState: TBurgerConstructor = {
 	ingredients: [],
 	bun: null,
 	sum: 0,

@@ -10,7 +10,7 @@ type TOrdersUserState = {
     connectData: TConnectedData
 };
 
-const initialState: TOrdersUserState = {
+export const initialState: TOrdersUserState = {
     connected: false,
     message: null,
     error: null,
@@ -29,10 +29,10 @@ const ordersUserReducer = createSlice({
 			{ ...state, error: null, connected: true }
 		),
 		ordersUserError: (state:TOrdersUserState, action: PayloadAction<string | null>) => (
-			{ ...state, error: action.payload }
+			{ ...state, connected: false, error: action.payload }
 		),
 		ordersUserClosed: (state:TOrdersUserState) => (
-            { ...state, error: null, connected: false }
+            { ...state, error: null, connected: false, connectData: initialState.connectData }
         ),
 		ordersUserMessage: (state:TOrdersUserState, action: PayloadAction<TOrdersList | null>) => (
             { ...state, error: null, message: action.payload }
