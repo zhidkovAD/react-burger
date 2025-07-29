@@ -12,7 +12,8 @@ createRoot(document.getElementById('root') as HTMLElement).render(
 	// <React.StrictMode>
 		<Provider store={store}>
 			<DndProvider backend={HTML5Backend}>
-				<BrowserRouter >
+				{/* Для деплоя параметр basename='/react-burger/' */}
+				<BrowserRouter > 
 					<App />
 				</BrowserRouter>
 			</DndProvider>

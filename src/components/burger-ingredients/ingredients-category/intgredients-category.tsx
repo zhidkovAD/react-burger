@@ -8,7 +8,7 @@ export const BurgerIngredientsCategory = forwardRef(
 		return (
 			<div ref={ref}>
 				<h2 className={`${styles.title} text text_type_main-medium`}>{name}</h2>
-				<div className={styles.container_ingredients}>
+				<div className={`cy_test_ingredients_category ${styles.container_ingredients}`}>
 					{ingredients_category.map((ingredient:TIngredient) => (
 						<BurgerIngredientCard
 							key={ingredient._id}

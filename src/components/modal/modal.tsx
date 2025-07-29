@@ -35,14 +35,14 @@ const Modal: FC<TProps> = ({
 
 	return ReactDOM.createPortal(
 		<div className={styles.container}>
-			<div className={styles.dialog}>
+			<div className={`modal_dialog ${styles.dialog}`}>
 				<div className={classNameTitleModal}>
 					{caption && (
 						<p className={`${styles.caption} text text_type_main-large`}>
 							{caption}
 						</p>
 					)}
-					<CloseIcon type='primary' onClick={onClose} />
+					<CloseIcon className='modal_close' type='primary' onClick={onClose} />
 				</div>
 				<div className={classNameContentModal}>{children}</div>
 			</div>

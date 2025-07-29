@@ -61,7 +61,7 @@ export const BurgerConstructor: FC  = () => {
 
 	return (
 		<section className={styles.burger_constructor}>
-			<div className={`${styles.burger} mt-25 ml-4`}>
+			<div className={`cy_constructor_test ${styles.burger} mt-25 ml-4`}>
 				{/* Выбранная булка */}
 				<div ref={dropTargetBunUp}>
 					{bun ? (
