@@ -67,7 +67,7 @@ const OrderDetails:FC = () => {
 					classNameTitleModal={styles.titleModalOrdDetails}
 					classNameContentModal={styles.contentModalOrdDetails}>
 					<p
-						className={`${styles['order-number']} text text_type_digits-large mb-8`}>
+						className={`cy_order_number ${styles['order-number']} text text_type_digits-large mb-8`}>
 						{orderNumber}
 					</p>
 					<p className='text text_type_main-medium mb-15 text-center'>

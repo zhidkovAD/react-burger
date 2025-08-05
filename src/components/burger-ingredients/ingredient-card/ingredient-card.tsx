@@ -40,7 +40,7 @@ export const BurgerIngredientCard:FC<TProps> = ({ ingredient }) => {
 	});
 
 	return (
-		 <Link className={styles.link} to={`${location.pathname}/${ingredient._id}`} state={{ location: location }} onClick={showDialogItem} ref={dragRef}>
+		 <Link className={`cy_test_card_ingredient ${styles.link}`} to={`${location.pathname}/${ingredient._id}`} state={{ location: location }} onClick={showDialogItem} ref={dragRef}>
 			<div className={styles.ingredient_card}>
 				{countIngredient > 0 && (
 					<Counter count={countIngredient} size='default' extraClass='m-1' />

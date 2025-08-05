@@ -11,7 +11,7 @@ type TBurgerIngredients = {
 	tab: string;
 }
 
-const initialState = {
+export const initialState: TBurgerIngredients = {
 	ingredients: [],
 	loading: false,
 	error: false,

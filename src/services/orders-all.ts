@@ -1,16 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrdersList } from "@utils/types"
 
+
+type TConnectedData = {url:string}
+
 type TOrdersAllState = {
     connected: boolean;
     message: TOrdersList | null;
     error: string | null;
+    connectData: TConnectedData
 };
 
-const initialState: TOrdersAllState = {
+export const initialState: TOrdersAllState = {
     connected: false,
     message: null,
-    error: null
+    error: null,
+    connectData: {url:""}
 };
 
 
@@ -18,17 +23,17 @@ const ordersAllReducer = createSlice({
 	name: 'orders_all',
 	initialState,
 	reducers: {
-        ordersAllConnect: (state:TOrdersAllState, action: PayloadAction<{url:string, addToken?:boolean}>)=> ({...state}),
+        ordersAllConnect: (state:TOrdersAllState, action: PayloadAction<TConnectedData>)=> ({...state, connectData: {...action.payload}}),
 		ordersAllOpen: (state:TOrdersAllState)=> ({...state}),
 		ordersAllDisconnect: (state:TOrdersAllState)=> ({...state}),
 		ordersAllSuccess: (state:TOrdersAllState) => (
 			{ ...state, error: null, connected: true }
 		),
 		ordersAllError: (state:TOrdersAllState, action: PayloadAction<string | null>) => (
-			{ ...state, error: action.payload }
+			{ ...state, connected: false, error: action.payload }
 		),
 		ordersAllClosed: (state:TOrdersAllState) => (
-            { ...state, error: null, connected: false }
+            { ...state, error: null, connected: false, connectData: initialState.connectData }
         ),
 		ordersAllMessage: (state:TOrdersAllState, action: PayloadAction<TOrdersList | null>) => (
             { ...state, error: null, message: action.payload }

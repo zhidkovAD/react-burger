@@ -6,6 +6,7 @@ import path from 'path';
 export default defineConfig({
 	plugins: [react()],
 	base: '',
+	// Для деплоя параметр: base: '/react-burger',
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),

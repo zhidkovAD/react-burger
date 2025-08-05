@@ -13,7 +13,7 @@ type TAuth = {
     forgotPassword: boolean;
 }
 
-const initialState: TAuth = {
+export const initialState: TAuth = {
     requestStart: false,
     requestError: null,
     requestSuccess: false,
@@ -31,15 +31,15 @@ const authReducer = createSlice({
 	reducers: {
 		authRegisterStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
 		authRegisterSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
-		authRegisterError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+		authRegisterError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false, user: initialState.user }),
 
         authLoginStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
 		authLoginSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email }, userLoggedIn: true }),
-		authLoginError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+		authLoginError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false, user: { name: "", email: "" } }),
 		
         authLogoutStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authLogoutSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: false }),
-		authLogoutError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false }),
+		authLogoutSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, userLoggedIn: false, user: {name: "", email: ""} }),
+		authLogoutError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, userLoggedIn: false, user: { name: "", email: "" } }),
 
         authForgotPasswordStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false, forgotPassword: false }),
 		authForgotPasswordSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, forgotPassword: true }),
@@ -54,8 +54,8 @@ const authReducer = createSlice({
 		authGetUserError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, user: initialState.user, userLoggedIn: false }),
 
         authPatchUserStart: (state: TAuth) => ({ ...state, requestStart: true, requestError: null, requestSuccess: false }),
-		authPatchUserSuccess: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true }),
-		authPatchUserError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false }),
+		authPatchUserSuccess: (state: TAuth, action: PayloadAction<TUser>) => ({ ...state, requestStart: false, requestError: null, requestSuccess: true, user: { name: action.payload.name, email: action.payload.email } }),
+		authPatchUserError: (state: TAuth, action: PayloadAction<string>) => ({ ...state, requestStart: false, requestError: action.payload, requestSuccess: false, user: {name: "", email: ""} }),
 
         authClearErrors: (state: TAuth) => ({ ...state, requestStart: false, requestError: null, requestSuccess: false }),
 	},
@@ -137,7 +137,7 @@ export const logout = () => (dispatch: AppDispatch) => {
 		body: JSON.stringify({token: localStorage.getItem("refreshToken")}),
 	}
     request('/auth/logout', options)
-        .then(result => {
+        .then(() => {
             dispatch(authLogoutSuccess());
         })
         .catch(err => {
@@ -161,7 +161,7 @@ export const forgotPassword = (form:TForgotPassword) => (dispatch: AppDispatch) 
 	}
 
     request('/password-reset', options)
-        .then(result => {
+        .then(() => {
             dispatch(authForgotPasswordSuccess());
         })
         .catch(err => {
@@ -180,7 +180,7 @@ export const resetPassword = (form:TResetPassword) => (dispatch: AppDispatch) =>
 	}
 
     request('/password-reset/reset', options)
-        .then(result => {
+        .then(() => {
             dispatch(authResetPasswordSuccess());
         })
         .catch(err => {
@@ -261,8 +261,8 @@ export function patchUser(form: TPatchUser) {
                 },
                 body: JSON.stringify({ ...form })
             })
-        .then(result => {
-                dispatch(authPatchUserSuccess());
+        .then((result) => {
+                dispatch(authPatchUserSuccess(result.user));
             })
         .catch(err => {
                 dispatch(authPatchUserError(err.message));

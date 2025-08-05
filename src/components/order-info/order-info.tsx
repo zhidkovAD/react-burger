@@ -27,7 +27,7 @@ const OrderInfo: FC = () => {
     let orderIngredients: Array<TIngredientQty> = [];
     let group: Record<string, TIngredientQty> = {};
     for (let item of order.ingredients) {
-      let ingredient = ingredients.find((elem: TIngredient) => elem._id === item);
+      let ingredient:any  = ingredients.find((elem: TIngredient) => elem._id === item);
       if (ingredient) {
         if (!group[item]) {
           group[item] = { ...ingredient, qty: 0 };
@@ -48,7 +48,7 @@ const OrderInfo: FC = () => {
             ? 'Создан'
             : 'Готовится';
   
-    const totalSum = orderIngredients.reduce((amount: number, elem: TIngredient) => elem.price + amount, 0);
+    const totalSum = orderIngredients.reduce((amount: number, elem: TIngredientQty) => elem.price + amount, 0);
 
     return { orderIngredients, orderStatus, totalSum }
   

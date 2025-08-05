@@ -11,7 +11,7 @@ type TCreateOrderState = {
     error: boolean;
 }
 
-const initialState: TCreateOrderState = {
+export const initialState: TCreateOrderState = {
 	orderNumber: null,
 	loading: false,
 	error: false,
@@ -29,12 +29,14 @@ const OrderDetailsReducer = createSlice({
 		}),
 		successRequestCreateOrder: (state:TCreateOrderState, action: PayloadAction<number | null>) => ({
 			...state,
+			loading: false,
 			orderNumber: action.payload,
 		}),
 		errorRequestCreateOrder: (state:TCreateOrderState) => ({
 			...state,
 			loading: false,
 			error: true,
+			orderNumber:null
 		}),
 		closeWinOrder: () => initialState,
 	},
